@@ -20,13 +20,15 @@ class case :
         self.canvas.move(self.id, pos.x * dim, pos.y * dim) #Positionnement de la case
     
     def rafraichir(self):
-        '''raffraichit la couleur d'une case'''
+        '''rafraichit la couleur d'une case'''
         if self.type == -1 :
             self.color = "black"
         elif self.type == 1 :
             self.color = "green"
         elif self.type == -2 :
             self.color = "red"
+        elif self.type == -3 :
+            self.color = "gray"
         else :
             self.color = "ivory"
         if self.grille :
@@ -55,24 +57,6 @@ class case :
             else :
                 self.canvas.itemconfig(self.id, fill = "#%02x%02x%02x" % col, outline = "#%02x%02x%02x" % col)
         return
-    
-    '''def densite(self,LIndiv):
-        
-        d=0
-        X=self.pos.x
-        Y=self.pos.y
-        
-        for i in Var.LIndiv :
-            if i.pos.x == X and i.pos.y == Y : 
-                d+=1
-            
-        for i in Var.LIndiv :
-            if d==1 : i.color="blue"
-            elif d>=2 : i.color="yellow"
-            elif d>=5 : i.color="red"
-                                    
-        return'''
-    
     
 def init_case(terrain):
     '''Initialisation des cases'''

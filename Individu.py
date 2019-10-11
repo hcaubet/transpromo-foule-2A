@@ -23,7 +23,18 @@ class individu:
         self.canvas.move(self.id, self.dpos.x, self.dpos.y)
         self.pos += self.dpos
         return
-     
+    
+    def rafraichir(self,color):
+        self.canvas.itemconfig(self.id, fill = color, outline = "black")
+        if color=="yellow":
+            self.vmoy*=0.8
+        elif color=="orange":
+            self.vmoy*=0.6
+        if color=="red":
+            self.vmoy*=0.2
+        return
+            
+
 # Fonction de gestion du nombre d'individu
 def init_indiv(terrain):
     supprime_indiv(terrain)
@@ -34,14 +45,52 @@ def init_indiv(terrain):
             y = rd.uniform(Var.rIndiv, (Var.hauteur - 1) * Var.dimCase - Var.rIndiv)
             if Var.TCase[floor(y / Var.dimCase), floor(x / Var.dimCase)].type >= 0 :
                 break
-        pose_indiv(x, y, terrain)
+        pose_indiv(x, y, terrain,"blue")
+    return
+
+def changement_couleur(attribut, valeur):
+    
+    individu.color=valeur
+    individu.canvas.itemconfig(fill=valeur)
+    
+#Fonction d'évaluation de la densité
+def renvoie_densite():
+    x=0
+    y=0
+    while x<30:
+        y=0
+        while y<50:
+            
+            density=0
+            for i in Var.LIndiv:
+                if (floor(i.pos.y/Var.dimCase)==x and floor(i.pos.x/Var.dimCase)==y):
+                    print(floor(i.pos.y/Var.dimCase),x, floor(i.pos.x/Var.dimCase),y)
+     
+                    density+=1
+                    if density<2:
+                        i.rafraichir("blue")
+                    elif density>=2 and density<4 :
+                        i.rafraichir("yellow")
+                    elif density>=4 and density <6 :
+                        i.rafraichir("orange")
+                    elif density>=6:
+                        i.rafraichir("red")
+            y+=1
+            
+         
+                              
+        x+=1
+   
+                  
     return
     
-def pose_indiv(x, y, terrain):
+
+    
+def pose_indiv(x, y, terrain, couleur):
     '''Pose un inidividu sur le terrain en (x,y)'''
     pos = vect2D(x, y)
     dpos = vect2D(0, 0)
-    indiv=individu(pos, dpos, rd.uniform(Var.vminIndiv, Var.vmaxIndiv), Var.rIndiv, terrain,"blue")
+    indiv=individu(pos, dpos, rd.uniform(Var.vminIndiv, Var.vmaxIndiv), Var.rIndiv, terrain,couleur)
     Var.LIndiv.append(indiv)
     return
 
