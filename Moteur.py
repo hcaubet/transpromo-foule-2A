@@ -68,8 +68,7 @@ def change_case_action(C, d = 0):
 # ===============================================================================================================
 def voisins(x, y, Lcondition, t):
     '''Renvoie la liste des voisins de la case (x,y) qui satisfont une liste de conditions'''
-    # Si t = False : on considère les voisins avec une frontière commune avec notre case
-    # Si t = True : on considère les voisins diagonaux en plus
+
     L = []
     V = [vect2D(x - 1, y), vect2D(x + 1, y), vect2D(x, y - 1), vect2D(x, y + 1)]
     if t :
