@@ -150,7 +150,7 @@ def coordonnees_pointeur(x,y) :
 def clic_gauche(event, taille_pinceau, terrain):
     coordonnees_pointeur(event.x,event.y)
     if(Var.placeIndiv) :
-        pose_indiv(event.x,event.y,terrain)
+        pose_indiv(event.x,event.y,terrain,"blue")
     else :
         if(Var.typeCase!=1) :
             wavefront(Var.xPointeur,Var.yPointeur, [], [change_case_action], taille_pinceau.get(), Var.typePinceau)
@@ -207,6 +207,8 @@ def selection(event):
         Var.typeCase = 0
     elif (value == "Sortie") :
         Var.typeCase = 1
+    elif (value == "Danger statique") :
+        Var.typeCase = -2
     elif(value == "Individu"):
         Var.placeIndiv = True
     return

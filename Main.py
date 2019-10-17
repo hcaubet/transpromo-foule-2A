@@ -70,11 +70,13 @@ Frame(p1, height=2, bd=1, relief=SUNKEN).pack(fill=X, padx=5, pady=5)
 Label(p1, text = "Pinceau").pack()
 
 # liste de sélection
-liste = Listbox(p1, height=4)
+liste = Listbox(p1, height=6)
 liste.insert(1, "Mur")
 liste.insert(2, "Sortie")
 liste.insert(3, "Individu")
 liste.insert(4, "Effacer")
+liste.insert(5, "Danger statique")
+liste.insert(6, "Individu dangereux")
 
 liste.pack(fill=X)
 
@@ -168,6 +170,7 @@ def update():
         bouge_indiv()
         sortir_indiv(terrain)
         stat_nbIndiv(label_nbIndiv)
+     
         
         if(len(Var.LIndiv) !=0) :
             Var.tps += Var.TpsRaffraichissement/1000
@@ -175,6 +178,7 @@ def update():
             label_temps.config(text = tpsStr)
     tk.update_idletasks()
     tk.after(Var.TpsRaffraichissement, update)
+    renvoie_densite()
 
 ##Initialisation
 init_case(terrain)
