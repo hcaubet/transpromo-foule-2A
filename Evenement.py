@@ -11,6 +11,7 @@ from Texte import *
 from Ligne import *
 from Individu import *
 from Moteur import *
+from IndividuDangereux import *
 
 # Fonction du Menu
     # Option de Fichier
@@ -149,13 +150,16 @@ def coordonnees_pointeur(x,y) :
 
 def clic_gauche(event, taille_pinceau, terrain):
     coordonnees_pointeur(event.x,event.y)
-    if(Var.placeIndiv) :
-        pose_indiv(event.x,event.y,terrain,"blue")
+    if(Var.placeIndivDanger) :
+        pose_indiv_danger(event.x,event.y,terrain)
     else :
-        if(Var.typeCase!=1) :
-            wavefront(Var.xPointeur,Var.yPointeur, [], [change_case_action], taille_pinceau.get(), Var.typePinceau)
+        if(Var.placeIndiv) :
+            pose_indiv(event.x,event.y,terrain,"blue")
         else :
-            creer_sortie(Var.xPointeur,Var.yPointeur)
+            if(Var.typeCase!=1) :
+                wavefront(Var.xPointeur,Var.yPointeur, [], [change_case_action], taille_pinceau.get(), Var.typePinceau)
+            else :
+                creer_sortie(Var.xPointeur,Var.yPointeur)
     return
 
 def deplacement_clic_gauche(event, taille_pinceau) :
@@ -201,6 +205,7 @@ def selection(event):
     index = int(w.curselection()[0])
     value = w.get(index)
     Var.placeIndiv = False
+    Var.placeIndivDanger = False
     if (value == "Mur") :
         Var.typeCase = -1
     elif (value == "Effacer") :
@@ -211,4 +216,6 @@ def selection(event):
         Var.typeCase = -2
     elif(value == "Individu"):
         Var.placeIndiv = True
+    elif(value == "Individu dangereux") :
+        Var.placeIndivDanger = True
     return
