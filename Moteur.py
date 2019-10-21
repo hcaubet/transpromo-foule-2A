@@ -9,6 +9,8 @@ from Case import *
 from Texte import *
 from Ligne import *
 from Individu import *
+from math import floor
+
 
 # Fonctions de modification du terrain et des cases qui agissent sur le texte et le champs vectoriel
 def terrain_vierge(terrain):
@@ -198,7 +200,16 @@ def rafraichir():
                     else :
                         Var.Ttexte[y, x].mot = str(Var.TCase[y, x].score)
                     Var.Ttexte[y, x].rafraichir()
-        elif Var.mode == 4: # mode 4 = on affiche un degradé et les vecteurs directionnels
+        elif Var.mode == 4: 
+            for x in range(1,Var.largeur,5):
+                for y in range(1,Var.hauteur,5): 
+                    density=0
+                    for i in Var.LIndiv:
+                        if (floor(i.pos.y/Var.dimCase)>=(y-2) and floor(i.pos.y/Var.dimCase)<=(y+2) and floor(i.pos.x/Var.dimCase)>=(x-2) and floor(i.pos.x/Var.dimCase)<=(x+2)):
+                            density+=1                            
+                    Var.Ttexte[y,x].mot=str(density);   
+                    Var.Ttexte[y,x].rafraichir()
+        elif Var.mode == 5: # mode 4 = on affiche un degradé et les vecteurs directionnels
             for x in range(Var.largeur):
                 for y in range(Var.hauteur):
                     Var.Tligne[y, x].pos1 = vect2D(x,y) * Var.dimCase + vect2D(1,1) * (Var.dimCase / 2)

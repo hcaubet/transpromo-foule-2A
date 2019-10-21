@@ -12,6 +12,7 @@ from Ligne import *
 from Individu import *
 from Moteur import *
 from IndividuDangereux import *
+from math import floor
 
 # Fonction du Menu
     # Option de Fichier
@@ -60,7 +61,7 @@ def remplir_mur() :
             Var.TCase[y,x].type = -1
             Var.TCase[y,x].rafraichir()
     return
-  
+
     
     # Option Affichage
 def change_mode(nvmode):

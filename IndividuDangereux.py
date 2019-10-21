@@ -14,7 +14,7 @@ class individuDangereux:
         self.r = r              # Rayon de chaque individu
         self.vmoy = vmoy        # Vitesse moyenne d'un individu
         self.canvas = canvas    # Le Canevas sur lequel on dessine
-        self.color = "black"      # Couleur de chaque individu
+        self.color = "green"      # Couleur de chaque individu
         self.id = canvas.create_oval(-1 * r, -1 * r, r, r, fill = color, outline = color) #Représentation graphique
         self.canvas.move(self.id, pos.x, pos.y) #On le place à sa position
     
@@ -23,33 +23,18 @@ class individuDangereux:
         self.canvas.move(self.id, self.dpos.x, self.dpos.y)
         self.pos += self.dpos
         return
-
-            
-
-# Fonction de gestion du nombre d'individu
-def init_indiv(terrain):
-    supprime_indiv(terrain)
-    for i in range(Var.NIndiv):
-        # Afin d'éviter que des individus se retrouve a moitie dans un mur on genere sur un intervalle ou chacun d'eux est pleinement dans une case
-        while 1 :
-            x = rd.uniform(Var.rIndiv, (Var.largeur - 1) * Var.dimCase - Var.rIndiv)
-            y = rd.uniform(Var.rIndiv, (Var.hauteur - 1) * Var.dimCase - Var.rIndiv)
-            if Var.TCase[floor(y / Var.dimCase), floor(x / Var.dimCase)].type >= 0 :
-                break
-        pose_indiv(x, y, terrain,"blue")
-    return
-
-def changement_couleur(attribut, valeur):
-    
-    individu.color=valeur
-    individu.canvas.itemconfig(fill=valeur)
+               
+    def rafraichir(self,color):
+        self.canvas.itemconfig(self.id, fill = "green", outline = "black")
+        self.vmoy*=0.8
+        return
 
     
 def pose_indiv_danger(x, y, terrain):
     '''Pose un inidividu sur le terrain en (x,y)'''
     pos = vect2D(x, y)
     dpos = vect2D(0, 0)
-    indiv=individuDangereux(pos, dpos, rd.uniform(Var.vminIndiv, Var.vmaxIndiv), Var.rIndiv, terrain,"black")
+    indiv=individuDangereux(pos, dpos, rd.uniform(Var.vminIndiv, Var.vmaxIndiv), Var.rIndiv, terrain,"green")
     Var.LIndiv.append(indiv)
     return
 
@@ -60,15 +45,6 @@ def supprime_indiv(terrain):
     Var.LIndiv = []
     return
     
-def sortir_indiv(terrain):
-    '''Permet de supprimer un individu lorsqu'il a atteint la sortie'''
-    for individu in Var.LIndiv :
-        x = floor(individu.pos.x / Var.dimCase)
-        y = floor(individu.pos.y / Var.dimCase)
-        if Var.TCase[y, x].type == 1 :
-            terrain.delete(individu.id)
-            Var.LIndiv.remove(individu)
-    return 
     
 # Fonction de gestion des collisions avec les murs, les bords et les autres individus
 def touche_indiv(individu1, individu2):
