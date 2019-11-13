@@ -102,8 +102,13 @@ Frame(p1, height=2, bd=1, relief=SUNKEN).pack(fill=X, padx=5, pady=5)
 
 Label(p1, text = "Individus").pack()
 
+
 #Bouton pour lancer une simulation automatique
-bouton_simulation = Button(p1, text = "Démarrer la simulation", command = lambda : (recalcule(label_dMaxCase), place_indiv(terrain, nb_indiv), reset_temps()))
+bouton_simulation = Button(p1, text = "Placer des individus", command = lambda : (place_indiv(terrain, nb_indiv),))
+bouton_simulation.pack(fill=X)
+
+#Bouton pour lancer une simulation automatique
+bouton_simulation = Button(p1, text = "Démarrer la simulation", command = lambda : (recalcule(label_dMaxCase), reset_temps()))
 bouton_simulation.pack(fill=X)
 
 #Détermine le nombre d'individu à placer entre 0 et 200
