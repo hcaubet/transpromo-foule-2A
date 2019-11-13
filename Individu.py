@@ -55,10 +55,13 @@ def changement_couleur(attribut, valeur):
     
 #Fonction d'évaluation de la densité
 def renvoie_densite():
+    Var.LSortieD.clear()
     for x in range(Var.largeur):
         for y in range(Var.hauteur): 
+            
             density=0
             for i in Var.LIndiv:
+                
                 if (floor(i.pos.y/Var.dimCase)==y and floor(i.pos.x/Var.dimCase)==x) :   
                     density+=1
                     if density<2:
@@ -66,25 +69,31 @@ def renvoie_densite():
                         if Var.TCase[y,x].type == -3:
                             Var.TCase[y,x].type = 0
                             Var.TCase[y, x].rafraichir()
-                            Var.LSortieD.remove([x,y])
+                            
+                            print(len(Var.LSortieD))
                     elif density>=2 and density<4 :
                         i.rafraichir("yellow")
                         if Var.TCase[y,x].type == -3:
                             Var.TCase[y,x].type = 0
                             Var.TCase[y, x].rafraichir()
-                            Var.LSortieD.remove([x,y])
+                            
+                            print("ok")
+                            
+                            
                     elif density>=4 and density <6 :
                         i.rafraichir("orange")
                         if Var.TCase[y,x].type == 0:
                             Var.TCase[y,x].type = -3
                             Var.TCase[y, x].rafraichir()
                             Var.LSortieD.append([x,y])
+                            
                     elif density>=6:
                         i.rafraichir("red")
                         if Var.TCase[y,x].type == 0:
                             Var.TCase[y,x].type = -3
                             Var.TCase[y, x].rafraichir()
                             Var.LSortieD.append([x,y])
+                            
               
     return
     

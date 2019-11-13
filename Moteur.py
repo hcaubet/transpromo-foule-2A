@@ -19,6 +19,7 @@ def terrain_vierge(terrain):
     cacher_ligne()
     cacher_texte()
     Var.LSortie = []
+    Var.LSortieD=[]
     for x in range(Var.largeur):
         for y in range(Var.hauteur):
             Var.TCase[y, x].type = 0
@@ -120,10 +121,12 @@ def wavefront(x, y, Lcondition, Laction, maxd, t):
 
 def recalcule_champ_potentiel():
     '''Recalcule le champ scalaire, c'est le programme de base qui fait fonctionner notre algorithme'''
+    
+    
     for x in range(Var.largeur):
         for y in range(Var.hauteur):
             Var.TCase[y, x].score = -1 # On réinitialise toutes les cases à la distance par défaut -1
-            
+            Var.TCase[y,x ].scoreD = -1
     for (x, y) in Var.LSortie :
         A = wavefront(x, y, [pas_mur_condition], [change_distance_action], Var.hauteur * Var.largeur, False)
         # Pour chaque sortie, on effectue wavefront, c'est à dire qu'on regarde le plus court chemin de chaque case à cette sortie, et on prend le minimum
