@@ -19,6 +19,7 @@ def terrain_vierge(terrain):
     cacher_ligne()
     cacher_texte()
     Var.LSortie = []
+    Var.LSortieD = []
     for x in range(Var.largeur):
         for y in range(Var.hauteur):
             Var.TCase[y, x].type = 0
@@ -119,6 +120,9 @@ def recalcule_champ_potentiel():
         wavefront(x, y, [pas_mur_condition], [change_distance_action], Var.hauteur * Var.largeur, False)
         # Pour chaque sortie, on effectue wavefront, c'est à dire qu'on regarde le plus court chemin de chaque case à cette sortie, et on prend le minimum
         # La distance maximum correspond ici au nombre de cases sur le plateau
+    for (x, y) in Var.LSortieD :
+        wavefront(x, y, [pas_mur_condition], [change_distance_action], Var.hauteur * Var.largeur, False)
+   
     direction()
     rafraichir()
     return

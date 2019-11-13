@@ -20,7 +20,7 @@ vmaxIndiv = 2                               # Vitesse maximale d'un individu
 
 # Variables concernant le terrain :
 LSortie = []    # Liste des sorties sous la forme [x,y]
-
+LSortieD = []
 #Variables relatif à la selection des cases que l'on va parcourir
     # x = abscisse, y = ordonnée, (0,0) représente la case en haut à gauche
     # Par défaut, si aucune case n'est selectionnée, on pointe vers la case (-1,-1)
