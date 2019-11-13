@@ -169,6 +169,7 @@ liste.bind("<<ListboxSelect>>", selection)
 def update():
     if not(Var.pause) :
         bouge_indiv()
+        bouge_indiv2()
         sortir_indiv(terrain)
         stat_nbIndiv(label_nbIndiv)
      

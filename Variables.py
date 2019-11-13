@@ -12,6 +12,7 @@ dimCase = 20                                # Taille d'une case en pixels
 
 # Variables concernant les individus
 LIndiv = []                                 # Liste des individus sur le terrain
+LIndivDangereux= []
 NIndiv = 100                                # Nombre d'individu à créer au début de la simulation
 rIndiv = 3                                  # Rayon de chaque individu
 vminIndiv = 0.5                             # Vitesse minimale d'un individu

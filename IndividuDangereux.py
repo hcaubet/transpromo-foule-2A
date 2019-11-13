@@ -12,10 +12,10 @@ class individuDangereux:
         self.pos = pos          # Position de chaque individu
         self.dpos = dpos        # Vitesse de chaque individu
         self.r = r              # Rayon de chaque individu
-        self.vmoy = vmoy        # Vitesse moyenne d'un individu
+        self.vmoy = 1.5*vmoy        # Vitesse moyenne d'un individu
         self.canvas = canvas    # Le Canevas sur lequel on dessine
-        self.color = "green"      # Couleur de chaque individu
-        self.id = canvas.create_oval(-1 * r, -1 * r, r, r, fill = color, outline = color) #Représentation graphique
+        self.color = "red"      # Couleur de chaque individu
+        self.id = canvas.create_oval(-2 * r, -2 * r, 2*r, 2*r, fill = "red", outline = "black") #Représentation graphique
         self.canvas.move(self.id, pos.x, pos.y) #On le place à sa position
     
     def bouge(self):
@@ -25,8 +25,7 @@ class individuDangereux:
         return
                
     def rafraichir(self,color):
-        self.canvas.itemconfig(self.id, fill = "green", outline = "black")
-        self.vmoy*=0.8
+        self.canvas.itemconfig(self.id, fill = "red", outline = "black")
         return
 
     
@@ -35,12 +34,12 @@ def pose_indiv_danger(x, y, terrain):
     pos = vect2D(x, y)
     dpos = vect2D(0, 0)
     indiv=individuDangereux(pos, dpos, rd.uniform(Var.vminIndiv, Var.vmaxIndiv), Var.rIndiv, terrain,"green")
-    Var.LIndiv.append(indiv)
+    Var.LIndivDangereux.append(indiv)
     return
 
 def supprime_indiv(terrain):
     '''supprime tous les individus du terrain'''
-    for i in Var.LIndiv :
+    for i in Var.LIndivDangereux :
         terrain.delete(i.id)
     Var.LIndiv = []
     return
@@ -91,14 +90,14 @@ def rebond_bord(individu):
     return
 
 # Programme de gestion des mouvements
-def bouge_indiv():
+def bouge_indiv2():
     '''Gestion du mouvement des individus en fonction de l'environnement de chacun'''
-    for i, individu1 in enumerate(Var.LIndiv) :
+    for i, individu1 in enumerate(Var.LIndivDangereux) :
         x = floor(individu1.pos.x / Var.dimCase)
         y = floor(individu1.pos.y / Var.dimCase)
         individu1.dpos = individu1.dpos.normalise() * np.random.normal(individu1.vmoy, 0.2)
         individu1.dpos += Var.Tdirection[y,x]
-        for individu2 in Var.LIndiv[i+1:] :
+        for individu2 in Var.LIndivDangereux[i+1:] :
             if touche_indiv(individu1, individu2) :
                 rebond_indiv(individu1, individu2)
         rebond_bord(individu1)

@@ -63,14 +63,25 @@ def renvoie_densite():
                     density+=1
                     if density<2:
                         i.rafraichir("blue")
+                        if Var.TCase[y,x].type == -3:
+                            Var.TCase[y,x].type = 0
+                            Var.TCase[y, x].rafraichir()
                     elif density>=2 and density<4 :
                         i.rafraichir("yellow")
+                        if Var.TCase[y,x].type == -3:
+                            Var.TCase[y,x].type = 0
+                            Var.TCase[y, x].rafraichir()
                     elif density>=4 and density <6 :
                         i.rafraichir("orange")
+                        if Var.TCase[y,x].type == 0:
+                            Var.TCase[y,x].type = -3
+                            Var.TCase[y, x].rafraichir()
                     elif density>=6:
-                        i.rafraichir("red")                    
-            y+=1                              
-        x+=1                 
+                        i.rafraichir("red")
+                        if Var.TCase[y,x].type == 0:
+                            Var.TCase[y,x].type = -3
+                            Var.TCase[y, x].rafraichir()
+              
     return
     
 
