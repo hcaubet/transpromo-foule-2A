@@ -96,7 +96,7 @@ def bouge_indiv2():
         x = floor(individu1.pos.x / Var.dimCase)
         y = floor(individu1.pos.y / Var.dimCase)
         individu1.dpos = individu1.dpos.normalise() * np.random.normal(individu1.vmoy, 0.2)
-        individu1.dpos += Var.Tdirection[y,x]
+        individu1.dpos += Var.TdirectionD[y,x]
         for individu2 in Var.LIndivDangereux[i+1:] :
             if touche_indiv(individu1, individu2) :
                 rebond_indiv(individu1, individu2)

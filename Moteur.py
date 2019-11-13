@@ -116,12 +116,12 @@ def recalcule_champ_potentiel():
     for x in range(Var.largeur):
         for y in range(Var.hauteur):
             Var.TCase[y, x].score = -1 # On réinitialise toutes les cases à la distance par défaut -1
-    for (x, y) in Var.LSortie :
+    for (x, y) in Var.LSortieD :
         wavefront(x, y, [pas_mur_condition], [change_distance_action], Var.hauteur * Var.largeur, False)
         # Pour chaque sortie, on effectue wavefront, c'est à dire qu'on regarde le plus court chemin de chaque case à cette sortie, et on prend le minimum
         # La distance maximum correspond ici au nombre de cases sur le plateau
-    for (x, y) in Var.LSortieD :
-        wavefront(x, y, [   pas_mur_condition], [change_distance_action], Var.hauteur * Var.largeur, False)
+    for (a, b) in Var.LSortie :
+        wavefront(a, b, [   pas_mur_condition], [change_distance_action], Var.hauteur * Var.largeur, False)
    
     direction()
     rafraichir()
