@@ -41,7 +41,7 @@ def supprime_indiv(terrain):
     '''supprime tous les individus du terrain'''
     for i in Var.LIndivDangereux :
         terrain.delete(i.id)
-    Var.LIndiv = []
+    Var.LIndivDangereux = []
     return
     
     
@@ -90,7 +90,7 @@ def rebond_bord(individu):
     return
 
 # Programme de gestion des mouvements
-def bouge_indiv2():
+def bouge_indiv():
     '''Gestion du mouvement des individus en fonction de l'environnement de chacun'''
     for i, individu1 in enumerate(Var.LIndivDangereux) :
         x = floor(individu1.pos.x / Var.dimCase)

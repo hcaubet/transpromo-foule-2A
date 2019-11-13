@@ -19,7 +19,6 @@ def terrain_vierge(terrain):
     cacher_ligne()
     cacher_texte()
     Var.LSortie = []
-    Var.LSortieD = []
     for x in range(Var.largeur):
         for y in range(Var.hauteur):
             Var.TCase[y, x].type = 0
@@ -27,6 +26,8 @@ def terrain_vierge(terrain):
             Var.TCase[y, x].rafraichir()
             Var.Tdirection[y, x].x = 0
             Var.Tdirection[y, x].y = 0
+            Var.TdirectionD[y, x].x = 0
+            Var.TdirectionD[y, x].y = 0
     return
     
 def creer_sortie(x, y):
@@ -56,7 +57,13 @@ def change_distance_action(C, d):
     else :
         Var.TCase[C.y, C.x].score = d
     return 
-    
+def change_distance_action2(C, d):
+    '''Atribue une distance du plus court chemin à la case C en fonction de d, la nouvelle distance à une autre sortie'''
+    if Var.TCase[C.y, C.x].scoreD >= 0 : # cela signifie qu'on a déjà calculé la distance de cette case à une sortie
+        Var.TCase[C.y, C.x].scoreD = min(d, Var.TCase[C.y, C.x].scoreD) # on selectionne la plus proche
+    else :
+        Var.TCase[C.y, C.x].scoreD = d
+    return 
 def change_case_action(C, d = 0):
     '''Change le type de case de la case C'''
     #NB : le paramètre d n'est pas utilisé
@@ -116,19 +123,22 @@ def recalcule_champ_potentiel():
     for x in range(Var.largeur):
         for y in range(Var.hauteur):
             Var.TCase[y, x].score = -1 # On réinitialise toutes les cases à la distance par défaut -1
-    for (x, y) in Var.LSortieD :
-        wavefront(x, y, [pas_mur_condition], [change_distance_action], Var.hauteur * Var.largeur, False)
+            
+    for (x, y) in Var.LSortie :
+        A = wavefront(x, y, [pas_mur_condition], [change_distance_action], Var.hauteur * Var.largeur, False)
         # Pour chaque sortie, on effectue wavefront, c'est à dire qu'on regarde le plus court chemin de chaque case à cette sortie, et on prend le minimum
         # La distance maximum correspond ici au nombre de cases sur le plateau
-    for (a, b) in Var.LSortie :
-        wavefront(a, b, [   pas_mur_condition], [change_distance_action], Var.hauteur * Var.largeur, False)
+    for (a, b) in Var.LSortieD :
+        B = wavefront(a, b, [   pas_mur_condition], [change_distance_action2], Var.hauteur * Var.largeur, False)
+        print("Je veux mourir")
    
-    direction()
+    direction("indivN")
+    direction("indivD")
     rafraichir()
     return
 # ===============================================================================================================
 
-def direction() :
+def direction(typei) :
     '''Calcule le tableau des directions à prendre'''
     for x in range(Var.largeur):
         for y in range(Var.hauteur):
@@ -138,27 +148,56 @@ def direction() :
                 #On va calculer le vecteur à prendre : le gradient de distance
                 def aux1():
                     '''Fonction auxiliaire qui gère le cas où on est en contact avec un obstacle'''
-                    s = Var.TCase[y, x].score
+                    
                     vx = 0
                     vy = 0
-                    for v in V :
-                        if Var.TCase[v.y, v.x].score < s :# on calcule les gradient directionnels entre v et (x,y) et on les somme
-                            vx += (v.x - x) 
-                            vy += (v.y - y)
-                    return (vx, vy)
+                    if  (typei == "indivN") :
+                        s = Var.TCase[y, x].score
+                        for v in V :
+                            if Var.TCase[v.y, v.x].score < s :# on calcule les gradient directionnels entre v et (x,y) et on les somme
+                                vx += (v.x - x) 
+                                vy += (v.y - y)
+                        return (vx, vy)
+                        
+                    else :
+                        s = Var.TCase[y, x].scoreD
+                        for v in V :
+                            if Var.TCase[v.y, v.x].scoreD < s :# on calcule les gradient directionnels entre v et (x,y) et on les somme
+                                vx += (v.x - x) 
+                                vy += (v.y - y)
+                        return (vx, vy)
+                        
                 def aux2():
                     '''Fonction auxiliaire qui gère le cas ou on doit choisir '''
-                    s = Var.TCase[y, x].score
+                    
+                    
                     vx = 0
                     vy = 0
-                    for v in V :
-                        if Var.TCase[v.y, v.x].score < s : # On choisit arbitrairement un voisin disponible en fonction du gradient
-                            vx = v.x - x
-                            vy = v.y - y
-                    return (vx, vy)
+                    if  (typei == "indivN") :
+                        s = Var.TCase[y, x].score
+                        for v in V :
+                            if Var.TCase[v.y, v.x].score < s : # On choisit arbitrairement un voisin disponible en fonction du gradient
+                                vx = v.x - x
+                                vy = v.y - y
+                        return (vx, vy)
+                    else:
+                        s = Var.TCase[y, x].scoreD
+                        for v in V :
+                            if Var.TCase[v.y, v.x].scoreD < s : # On choisit arbitrairement un voisin disponible en fonction du gradient
+                                vx = v.x - x
+                                vy = v.y - y
+                        return (vx, vy)
+                    
                 if len(V) == 4 : # Tous les voisins sont des cases accessibles, on calcule un gradient discret avec les cases autour de celle qu'on considère
-                    vx = Var.TCase[y, x - 1].score - Var.TCase[y, x + 1].score
-                    vy = Var.TCase[y - 1, x].score - Var.TCase[y + 1, x].score
+                    if (typei == "indivN"):
+                        vx = Var.TCase[y, x - 1].score - Var.TCase[y, x + 1].score
+                        vy = Var.TCase[y - 1, x].score - Var.TCase[y + 1, x].score
+                    else:
+                        vx = Var.TCase[y, x - 1].scoreD - Var.TCase[y, x + 1].scoreD
+                        vy = Var.TCase[y - 1, x].scoreD - Var.TCase[y + 1, x].scoreD
+                 
+                        
+                    
                     if Var.TCase[y + np.sign(vy), x + np.sign(vx)].type < 0 : # On gère le cas ou on fonce sur un mur
                         (vx, vy) = aux2()
                 elif len(V) == 2 :
@@ -170,13 +209,24 @@ def direction() :
                 else :
                     (vx, vy) = aux1()
                 if vect2D(vx, vy).norme() !=0 : #Normalisation du vecteur
-                    Var.Tdirection[y, x] = vect2D(vx, vy).normalise()
+                    if  (typei == "indivN") :
+                        Var.Tdirection[y, x] = vect2D(vx, vy).normalise()
+                    else :
+                        Var.TdirectionD[y, x] = vect2D(vx, vy).normalise()
                 else :
                     (vx, vy) = aux2()
                     if vect2D(vx,vy).norme() !=0 :
-                        Var.Tdirection[y, x] = vect2D(vx, vy).normalise()
+                        if  (typei == "indivN") :  
+                            Var.Tdirection[y, x] = vect2D(vx, vy).normalise()
+                        else :
+                            Var.TdirectionD[y, x] = vect2D(vx, vy).normalise()
+                        
                     else : 
-                        Var.Tdirection[y, x] = vect2D(vx, vy)
+                        if  (typei == "indivN") : 
+                            Var.Tdirection[y, x] = vect2D(vx, vy)
+                        else:
+                            Var.TdirectionD[y, x] = vect2D(vx, vy)
+                        
                 
     return
     

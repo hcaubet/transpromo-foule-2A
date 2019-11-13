@@ -160,7 +160,7 @@ def rebond_bord(individu):
     return
 
 # Programme de gestion des mouvements
-def bouge_indiv():
+def bouge_indiv2():
     '''Gestion du mouvement des individus en fonction de l'environnement de chacun'''
     for i, individu1 in enumerate(Var.LIndiv) :
         x = floor(individu1.pos.x / Var.dimCase)

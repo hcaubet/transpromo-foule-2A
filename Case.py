@@ -7,11 +7,12 @@ from Vect2D import *
 import Variables as Var
 
 class case :
-    def __init__(self, pos = vect2D(), dim = 0, type = 0, score = 0, canvas = "", color = "ivory", explore = False, grille = False):
-        self.pos = pos          # Position de la case
+    def __init__(self, pos = vect2D(), dim = 0, type = 0,  score = 0,   canvas = "", color = "ivory", explore = False, grille = False):
+        self.pos = pos          # Position de la case 
         self.dim = dim          # Dimension de la case en pixels
         self.type = type        # Type de la case
         self.score = score      # Distance du plus court chemin à la sortie
+        self.scoreD = score      # Distance du plus court chemin à la sortie
         self.canvas = canvas    # Le Canevas sur lequel on dessine
         self.color = color      # Couleur de la case
         self.explore = explore  # Boleen qui indique si la case a ete ou non parcourue

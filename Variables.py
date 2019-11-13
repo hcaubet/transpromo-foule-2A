@@ -29,12 +29,13 @@ yPointeur = -1                              # ordonnée du curseur en case
 nvCase = True                               # boleen qui renvoit true lorsqu'une case est sélectionnée
 typeCase = 0                                # type de la case (-1 = infranchissable, 0 = case normale, 1 = sortie)
 placeIndiv = False                          # Sur une case, true si on peut placer un individu
+placeIndivDanger = False
 
 # Variables globale du stockage des donnees
     # Attention, pour demander la case à la colonne x et ligne y, il faut écrire TCase[y,x]
 TCase = np.array([])                        # Stocke les cases sous forme de tableau 
 Tdirection = np.array([[vect2D()] * largeur] * hauteur, vect2D)  # Stocke le vecteur direction de chacune des cases dans un tableau
-TdirectionDangereux = np.array([[vect2D()] * largeur] * hauteur, vect2D) # Stocke le vecteur direction des individus dangereux
+TdirectionD = np.array([[vect2D()] * largeur] * hauteur, vect2D) # Stocke le vecteur direction des individus dangereux
 Tligne = np.array([])                       # Stocke les lignes de champ sous forme de tableau
 Ttexte = np.array([])                       # Stocke les distances minimum de chaque case à la sortie sous forme de tableau
 Tdensite = np.array([])
