@@ -173,6 +173,13 @@ liste.bind("<<ListboxSelect>>", selection)
 ##Fonction de mise à jour
 def update():
     if not(Var.pause) :
+        Var.refresh+=1
+        
+        if (Var.refresh >= 100) :
+            recalcule(label_dMaxCase)
+            Var.LSortieD.clear()
+            Var.refresh=0
+        
         bouge_indiv()
         bouge_indiv2()
         sortir_indiv(terrain)

@@ -7,6 +7,7 @@ import numpy as np
 import random as rd
 import Variables as Var
 
+
 class individu:
     def __init__(self, pos, dpos, vmoy, r, canvas, color):
         self.pos = pos          # Position de chaque individu
@@ -55,7 +56,6 @@ def changement_couleur(attribut, valeur):
     
 #Fonction d'évaluation de la densité
 def renvoie_densite():
-    Var.LSortieD.clear()
     for x in range(Var.largeur):
         for y in range(Var.hauteur): 
             
@@ -69,16 +69,11 @@ def renvoie_densite():
                         if Var.TCase[y,x].type == -3:
                             Var.TCase[y,x].type = 0
                             Var.TCase[y, x].rafraichir()
-                            
-                            print(len(Var.LSortieD))
                     elif density>=2 and density<4 :
                         i.rafraichir("yellow")
                         if Var.TCase[y,x].type == -3:
                             Var.TCase[y,x].type = 0
-                            Var.TCase[y, x].rafraichir()
-                            
-                            print("ok")
-                            
+                            Var.TCase[y, x].rafraichir()                           
                             
                     elif density>=4 and density <6 :
                         i.rafraichir("orange")
@@ -86,14 +81,13 @@ def renvoie_densite():
                             Var.TCase[y,x].type = -3
                             Var.TCase[y, x].rafraichir()
                             Var.LSortieD.append([x,y])
-                            
+                           
                     elif density>=6:
                         i.rafraichir("red")
                         if Var.TCase[y,x].type == 0:
                             Var.TCase[y,x].type = -3
                             Var.TCase[y, x].rafraichir()
                             Var.LSortieD.append([x,y])
-                            
               
     return
     
