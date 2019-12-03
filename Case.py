@@ -13,6 +13,7 @@ class case :
         self.type = type        # Type de la case
         self.score = score      # Distance du plus court chemin à la sortie
         self.scoreD = score      # Distance du plus court chemin à la sortie
+        self.hasDanger = False
         self.canvas = canvas    # Le Canevas sur lequel on dessine
         self.color = color      # Couleur de la case
         self.explore = explore  # Boleen qui indique si la case a ete ou non parcourue

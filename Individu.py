@@ -7,6 +7,7 @@ import numpy as np
 import random as rd
 import Variables as Var
 
+
 class individu:
     def __init__(self, pos, dpos, vmoy, r, canvas, color):
         self.pos = pos          # Position de chaque individu
@@ -15,6 +16,8 @@ class individu:
         self.vmoy = vmoy        # Vitesse moyenne d'un individu
         self.canvas = canvas    # Le Canevas sur lequel on dessine
         self.color = color      # Couleur de chaque individu
+        self.flightAssert = False
+        self.flightState = False
         self.id = canvas.create_oval(-1 * r, -1 * r, r, r, fill = color, outline = color) #Représentation graphique
         self.canvas.move(self.id, pos.x, pos.y) #On le place à sa position
     
@@ -33,7 +36,15 @@ class individu:
         if color=="red":
             self.vmoy*=0.2
         return
+    
+    def refFlightState(self,fs):
+        self.flightAssert=True
+        if fs == True:
+            self.flightState=True
+            self.canvas.itemconfig(self.id, fill="darkgray")
+            self.vmoy *=2
             
+        return
 
 # Fonction de gestion du nombre d'individu
 def init_indiv(terrain):
@@ -58,41 +69,58 @@ def renvoie_densite():
     Var.LSortieD.clear()
     for x in range(Var.largeur):
         for y in range(Var.hauteur): 
-            
+            activateImmFlight= False
+            activateRepFlight = False
             density=0
+            for i in Var.LIndivDangereux:
+                if (floor(i.pos.y/Var.dimCase)==y and floor(i.pos.x/Var.dimCase)==x) : 
+                    activateImmFlight=True;
+                    Var.TCase[y,x].hasDanger = True
             for i in Var.LIndiv:
-                
+                a =rd.randint(1,100)
                 if (floor(i.pos.y/Var.dimCase)==y and floor(i.pos.x/Var.dimCase)==x) :   
+                    if (activateImmFlight==True or activateRepFlight==True) and i.flightAssert == False:
+                        print(a)
+                        if activateImmFlight ==True:
+                            if a > 30:
+                                i.refFlightState(1)
+                            else:
+                                i.refFlightState(0)
+                        elif activateRepFlight == True:
+                            if a > 60 :
+                                i.refFlightState(1)
+                            else:
+                                i.refFlightState(0)
+                    elif activateImmFlight== False and i.flightState == True:
+                        activateRepFlight= True
                     density+=1
-                    if density<2:
+                    if density<2 and i.flightState == False:
                         i.rafraichir("blue")
                         if Var.TCase[y,x].type == -3:
                             Var.TCase[y,x].type = 0
                             Var.TCase[y, x].rafraichir()
                             
-                            print(len(Var.LSortieD))
-                    elif density>=2 and density<4 :
+                    elif density>=2 and density<4 and i.flightState == False :
                         i.rafraichir("yellow")
                         if Var.TCase[y,x].type == -3:
                             Var.TCase[y,x].type = 0
                             Var.TCase[y, x].rafraichir()
                             
-                            print("ok")
                             
-                            
-                    elif density>=4 and density <6 :
+                    elif density>=4 and density <6 and i.flightState == False :
                         i.rafraichir("orange")
                         if Var.TCase[y,x].type == 0:
                             Var.TCase[y,x].type = -3
                             Var.TCase[y, x].rafraichir()
                             Var.LSortieD.append([x,y])
                             
-                    elif density>=6:
+                    elif density>=6 and i.flightState == False:
                         i.rafraichir("red")
                         if Var.TCase[y,x].type == 0:
                             Var.TCase[y,x].type = -3
                             Var.TCase[y, x].rafraichir()
                             Var.LSortieD.append([x,y])
+                        
                             
               
     return
@@ -175,7 +203,8 @@ def bouge_indiv2():
         x = floor(individu1.pos.x / Var.dimCase)
         y = floor(individu1.pos.y / Var.dimCase)
         individu1.dpos = individu1.dpos.normalise() * np.random.normal(individu1.vmoy, 0.2)
-        individu1.dpos += Var.Tdirection[y,x]
+        if individu1.flightState == False:
+            individu1.dpos += Var.Tdirection[y,x]
         for individu2 in Var.LIndiv[i+1:] :
             if touche_indiv(individu1, individu2) :
                 rebond_indiv(individu1, individu2)
