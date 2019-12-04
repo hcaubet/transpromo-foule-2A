@@ -131,12 +131,12 @@ def recalcule_champ_potentiel():
         A = wavefront(x, y, [pas_mur_condition], [change_distance_action], Var.hauteur * Var.largeur, False)
         # Pour chaque sortie, on effectue wavefront, c'est à dire qu'on regarde le plus court chemin de chaque case à cette sortie, et on prend le minimum
         # La distance maximum correspond ici au nombre de cases sur le plateau
-    for (a, b) in Var.LSortieD :
+    for (a, b) in Var.LSortieD :    # on fait pareil pour le second champ vectoriel
         B = wavefront(a, b, [   pas_mur_condition], [change_distance_action2], Var.hauteur * Var.largeur, False)
    
-    direction("indivN")
-    direction("indivD")
-    rafraichir()
+    direction("indivN") #on calcule la direction pour les individus normaux
+    direction("indivD") # puis pour les dangereux
+    rafraichir() # on actualise tout ce qu'il se passe sur la grille
     return
 # ===============================================================================================================
 
