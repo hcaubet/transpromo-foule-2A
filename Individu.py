@@ -66,7 +66,6 @@ def changement_couleur(attribut, valeur):
     
 #Fonction d'évaluation de la densité
 def renvoie_densite():
-    Var.LSortieD.clear()
     for x in range(Var.largeur):
         for y in range(Var.hauteur): 
             activateImmFlight= False

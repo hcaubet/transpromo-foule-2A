@@ -133,7 +133,6 @@ def recalcule_champ_potentiel():
         # La distance maximum correspond ici au nombre de cases sur le plateau
     for (a, b) in Var.LSortieD :
         B = wavefront(a, b, [   pas_mur_condition], [change_distance_action2], Var.hauteur * Var.largeur, False)
-        
    
     direction("indivN")
     direction("indivD")

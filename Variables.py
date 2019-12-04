@@ -19,6 +19,7 @@ vminIndiv = 0.5                             # Vitesse minimale d'un individu
 vmaxIndiv = 2                               # Vitesse maximale d'un individu
 
 # Variables concernant le terrain :
+refresh=0;
 LSortie = []    # Liste des sorties sous la forme [x,y]
 LSortieD = []
 #Variables relatif à la selection des cases que l'on va parcourir
