@@ -121,8 +121,6 @@ def wavefront(x, y, Lcondition, Laction, maxd, t):
 
 def recalcule_champ_potentiel():
     '''Recalcule le champ scalaire, c'est le programme de base qui fait fonctionner notre algorithme'''
-    
-    
     for x in range(Var.largeur):
         for y in range(Var.hauteur):
             Var.TCase[y, x].score = -1 # On réinitialise toutes les cases à la distance par défaut -1

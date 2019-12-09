@@ -10,6 +10,7 @@ import Variables as Var
 
 class individu:
     def __init__(self, pos, dpos, vmoy, r, canvas, color):
+        self.stoique = False
         self.pos = pos          # Position de chaque individu
         self.dpos = dpos        # Vitesse de chaque individu
         self.r = r              # Rayon de chaque individu
@@ -31,6 +32,7 @@ class individu:
     ''' change la couleur et la vitesse de chaque individu en fonction de la densité '''
     def rafraichir(self,color):
         self.canvas.itemconfig(self.id, fill = color, outline = "black")
+        self.color=color
         if color=="yellow":
             self.vmoy*=0.8
         elif color=="orange":
@@ -48,7 +50,6 @@ class individu:
             self.flightState=True   # on évalue son état de fuite à True
             self.canvas.itemconfig(self.id, fill="darkgray")    #et on change son apparence
             self.vmoy *=2       # ils vont deux fois plus vite quand ils se déplacent
-            
         return
 
 # Fonction de gestion du nombre d'individu
@@ -63,70 +64,70 @@ def init_indiv(terrain):
                 break
         pose_indiv(x, y, terrain,"blue")    
     return
+         
 
-def changement_couleur(attribut, valeur):
-    
-    individu.color=valeur
-    individu.canvas.itemconfig(fill=valeur)
-    
-#Fonction d'évaluation de la densité
+# Fonction d'évaluation de la densité
 def renvoie_densite():
     for x in range(Var.largeur):      # pour toutes les cases
-        for y in range(Var.hauteur):        
-            activateImmFlight= False  # la fuite immédiate est par défaut à False
-            activateRepFlight = False   # et la propagation aussi
-            density=0                
-            for i in Var.LIndivDangereux:      # pour chaque individu dangereux
-                if (floor(i.pos.y/Var.dimCase)==y and floor(i.pos.x/Var.dimCase)==x) : 
-                    activateImmFlight=True;     #on active la possibité de fuite dans la case où il se trouve
-                    Var.TCase[y,x].hasDanger = True      #la case contient un danger - on s'en sert pour le gradient ensuite
-            for i in Var.LIndiv: # Pour chaque individu normal
-                a =rd.randint(1,100)     # pour l'instant la fuite correspond à un nombre aléatoire
-                if (floor(i.pos.y/Var.dimCase)==y and floor(i.pos.x/Var.dimCase)==x) :   
-                    if (activateImmFlight==True or activateRepFlight==True) and i.flightAssert == False:
-                        
-                        if activateImmFlight ==True: #70% de chances de fuir si le danger est perçu (il faut changer ça)
-                            if a > 30:
-                                i.refFlightState(1) # moi face aux responsabilités
-                            else:
-                                i.refFlightState(0)
-                        elif activateRepFlight == True:  # un peu moins si on voit juste d'autres personnes fuir
-                            if a > 60 :
-                                i.refFlightState(1)
-                            else:
-                                i.refFlightState(0)
-                    elif activateImmFlight== False and i.flightState == True:
-                        activateRepFlight= True
-                    density+=1         # on augmente la densité 
-                    if density<2 and i.flightState == False:        # là on évalue la couleur en fonction de toutes les densités
-                        i.rafraichir("blue")
-                        if Var.TCase[y,x].type == -3:
-                            Var.TCase[y,x].type = 0
-                            Var.TCase[y, x].rafraichir()
-                            
-                    elif density>=2 and density<4 and i.flightState == False :
-                        i.rafraichir("yellow")
-                        if Var.TCase[y,x].type == -3:
-                            Var.TCase[y,x].type = 0
-                            Var.TCase[y, x].rafraichir()
-                            
-                            
-                    elif density>=4 and density <6 and i.flightState == False :
-                        i.rafraichir("orange")
-                        if Var.TCase[y,x].type == 0:
-                            Var.TCase[y,x].type = -3
-                            Var.TCase[y, x].rafraichir()
-                            Var.LSortieD.append([x,y])
-                            
-                    elif density>=6 and i.flightState == False:
-                        i.rafraichir("red")
-                        if Var.TCase[y,x].type == 0:
-                            Var.TCase[y,x].type = -3
-                            Var.TCase[y, x].rafraichir()
-                            Var.LSortieD.append([x,y])
-                        
-                            
-              
+        for y in range(Var.hauteur):
+            density=0
+            if Var.chrono <= 0 :             
+                activateImmFlight= False  # la fuite immédiate est par défaut à False
+                activateRepFlight = False   # et la propagation aussi
+                for i in Var.LIndivDangereux:      # pour chaque individu dangereux
+                    if (floor(i.pos.y/Var.dimCase)==y and floor(i.pos.x/Var.dimCase)==x) : 
+                        activateImmFlight=True;     # on active la possibité de fuite dans la case où il se trouve
+                        Var.TCase[y,x].hasDanger = True      # la case contient un danger - on s'en sert pour le gradient ensuite
+                for i in Var.LIndiv: # Pour chaque individu normal
+                    a =rd.randint(1,100)     # pour l'instant la fuite correspond à un nombre aléatoire
+                    if (floor(i.pos.y/Var.dimCase)==y and floor(i.pos.x/Var.dimCase)==x) : 
+                        if i.flightAssert == False:
+                            if activateImmFlight ==True: #70% de chances de fuir si le danger est perçu (il faut changer ça)
+                                if a > 90:
+                                    i.refFlightState(1)
+                                    i.stoique = True
+                                else :
+                                    i.refFlightState(1) # moi face aux responsabilités
+                            elif activateRepFlight == True:  # un peu moins si on voit juste d'autres personnes fuir
+                                if a > 60 :
+                                    i.refFlightState(1)
+                                else:
+                                    i.refFlightState(0)
+                        elif activateImmFlight== False and i.flightState == True:
+                            activateRepFlight= True
+                              
+                    Var.chrono=1
+            else :
+                Var.chrono-=1
+                for i in Var.LIndiv: # Pour chaque individu normal
+                    if (floor(i.pos.y/Var.dimCase)==y and floor(i.pos.x/Var.dimCase)==x) : 
+                        density+=1
+                        if density<2 and i.flightState == False:        # là on évalue la couleur en fonction de toutes les densités
+                            i.rafraichir("blue")
+                            if Var.TCase[y,x].type == -3:
+                                Var.TCase[y,x].type = 0
+                                Var.TCase[y, x].rafraichir()
+                                
+                        elif density>=2 and density<4 and i.flightState == False :
+                            i.rafraichir("yellow")
+                            if Var.TCase[y,x].type == -3:
+                                Var.TCase[y,x].type = 0
+                                Var.TCase[y, x].rafraichir()
+                                
+                                
+                        elif density>=4 and density <6 and i.flightState == False :
+                            i.rafraichir("orange")
+                            if Var.TCase[y,x].type == 0:
+                                Var.TCase[y,x].type = -3
+                                Var.TCase[y, x].rafraichir()
+                                Var.LSortieD.append([x,y])
+                                
+                        elif density>=6 and i.flightState == False:
+                            i.rafraichir("red")
+                            if Var.TCase[y,x].type == 0:
+                                Var.TCase[y,x].type = -3
+                                Var.TCase[y, x].rafraichir()
+                                Var.LSortieD.append([x,y])
     return
     
 
@@ -204,15 +205,18 @@ def rebond_bord(individu):
 def bouge_indiv2():
     '''Gestion du mouvement des individus en fonction de l'environnement de chacun'''
     for i, individu1 in enumerate(Var.LIndiv) :
-        x = floor(individu1.pos.x / Var.dimCase)
-        y = floor(individu1.pos.y / Var.dimCase)
-        individu1.dpos = individu1.dpos.normalise() * np.random.normal(individu1.vmoy, 0.2)
-        if individu1.flightState == False:
-            individu1.dpos += Var.Tdirection[y,x]
-        for individu2 in Var.LIndiv[i+1:] :
-            if touche_indiv(individu1, individu2) :
-                rebond_indiv(individu1, individu2)
-        rebond_bord(individu1)
-        rebond_mur(individu1)
-        individu1.bouge()
+        if individu1.stoique==False:
+            x = floor(individu1.pos.x / Var.dimCase)
+            y = floor(individu1.pos.y / Var.dimCase)
+            individu1.dpos = individu1.dpos.normalise() * np.random.normal(individu1.vmoy, 0.2)
+            if individu1.flightState ==False : 
+                individu1.dpos += Var.Tdirection[y,x]
+            else :
+                individu1.dpos -=Var.TdirectionD[y,x]
+            for individu2 in Var.LIndiv[i+1:] :
+                if touche_indiv(individu1, individu2) :
+                    rebond_indiv(individu1, individu2)
+            rebond_bord(individu1)
+            rebond_mur(individu1)
+            individu1.bouge()
     return

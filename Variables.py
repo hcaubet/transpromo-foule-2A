@@ -19,7 +19,8 @@ vminIndiv = 0.5                             # Vitesse minimale d'un individu
 vmaxIndiv = 2                               # Vitesse maximale d'un individu
 
 # Variables concernant le terrain :
-refresh=0;
+refresh=70
+chrono=60
 LSortie = []    # Liste des sorties sous la forme [x,y]
 LSortieD = []
 #Variables relatif à la selection des cases que l'on va parcourir
@@ -37,6 +38,7 @@ placeIndivDanger = False
 TCase = np.array([])                        # Stocke les cases sous forme de tableau 
 Tdirection = np.array([[vect2D()] * largeur] * hauteur, vect2D)  # Stocke le vecteur direction de chacune des cases dans un tableau
 TdirectionD = np.array([[vect2D()] * largeur] * hauteur, vect2D) # Stocke le vecteur direction des individus dangereux
+
 Tligne = np.array([])                       # Stocke les lignes de champ sous forme de tableau
 Ttexte = np.array([])                       # Stocke les distances minimum de chaque case à la sortie sous forme de tableau
 Tdensite = np.array([])

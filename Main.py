@@ -175,7 +175,7 @@ def update():
     if not(Var.pause) :
         Var.refresh+=1
         
-        if (Var.refresh >= 100) :
+        if (Var.refresh >= 50) :
             recalcule(label_dMaxCase)
             Var.LSortieD.clear()
             Var.refresh=0
