@@ -177,9 +177,8 @@ def update():
         
         if (Var.refresh >= 100) :
             recalcule(label_dMaxCase)
-            Var.LSortieD.clear()
             Var.refresh=0
-        
+
         bouge_indiv()
         bouge_indiv2()
         sortir_indiv(terrain)

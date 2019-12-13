@@ -68,59 +68,21 @@ def changement_couleur(attribut, valeur):
 def renvoie_densite():
     for x in range(Var.largeur):
         for y in range(Var.hauteur): 
-            activateImmFlight= False
-            activateRepFlight = False
             density=0
-            for i in Var.LIndivDangereux:
-                if (floor(i.pos.y/Var.dimCase)==y and floor(i.pos.x/Var.dimCase)==x) : 
-                    activateImmFlight=True;
-                    Var.TCase[y,x].hasDanger = True
             for i in Var.LIndiv:
-                a =rd.randint(1,100)
                 if (floor(i.pos.y/Var.dimCase)==y and floor(i.pos.x/Var.dimCase)==x) :   
-                    if (activateImmFlight==True or activateRepFlight==True) and i.flightAssert == False:
-                        if activateImmFlight ==True:
-                            if a > 30:
-                                i.refFlightState(1)
-                            else:
-                                i.refFlightState(0)
-                        elif activateRepFlight == True:
-                            if a > 60 :
-                                i.refFlightState(1)
-                            else:
-                                i.refFlightState(0)
-                    elif activateImmFlight== False and i.flightState == True:
-                        activateRepFlight= True
                     density+=1
                     if density<2 and i.flightState == False:
                         i.rafraichir("blue")
-                        if Var.TCase[y,x].type == -3:
-                            Var.TCase[y,x].type = 0
-                            Var.TCase[y, x].rafraichir()
                             
                     elif density>=2 and density<4 and i.flightState == False :
-                        i.rafraichir("yellow")
-                        if Var.TCase[y,x].type == -3:
-                            Var.TCase[y,x].type = 0
-                            Var.TCase[y, x].rafraichir()
-                            
+                        i.rafraichir("yellow")                            
                             
                     elif density>=4 and density <6 and i.flightState == False :
                         i.rafraichir("orange")
-                        if Var.TCase[y,x].type == 0:
-                            Var.TCase[y,x].type = -3
-                            Var.TCase[y, x].rafraichir()
-                            Var.LSortieD.append([x,y])
                             
                     elif density>=6 and i.flightState == False:
-                        i.rafraichir("red")
-                        if Var.TCase[y,x].type == 0:
-                            Var.TCase[y,x].type = -3
-                            Var.TCase[y, x].rafraichir()
-                            Var.LSortieD.append([x,y])
-                        
-                            
-              
+                        i.rafraichir("red")          
     return
     
 
