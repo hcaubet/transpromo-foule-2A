@@ -13,7 +13,7 @@ class individu:
         self.pos = pos          # Position de chaque individu
         self.dpos = dpos        # Vitesse de chaque individu
         self.r = r              # Rayon de chaque individu
-        self.vmoy = vmoy        # Vitesse moyenne d'un individu
+        self.vmoy = 1.5        # Vitesse moyenne d'un individu
         self.canvas = canvas    # Le Canevas sur lequel on dessine
         self.color = color      # Couleur de chaque individu
         self.flightAssert = False
@@ -30,11 +30,11 @@ class individu:
     def rafraichir(self,color):
         self.canvas.itemconfig(self.id, fill = color, outline = "black")
         if color=="yellow":
-            self.vmoy*=0.8
+            self.vmoy=0.8
         elif color=="orange":
-            self.vmoy*=0.6
+            self.vmoy=0.6
         if color=="red":
-            self.vmoy*=0.2
+            self.vmoy=0.2
         return
     
     def refFlightState(self,fs):
@@ -42,7 +42,7 @@ class individu:
         if fs == True:
             self.flightState=True
             self.canvas.itemconfig(self.id, fill="darkgray")
-            self.vmoy *=2
+            self.vmoy =2
             
         return
 
@@ -65,7 +65,7 @@ def changement_couleur(attribut, valeur):
     individu.canvas.itemconfig(fill=valeur)
     
 #Fonction d'évaluation de la densité
-def renvoie_densite():
+def renvoie_densite(terrain):
     for x in range(Var.largeur):
         for y in range(Var.hauteur): 
             activateImmFlight= False
@@ -80,7 +80,11 @@ def renvoie_densite():
                 if (floor(i.pos.y/Var.dimCase)==y and floor(i.pos.x/Var.dimCase)==x) :   
                     if (activateImmFlight==True or activateRepFlight==True) and i.flightAssert == False:
                         if activateImmFlight ==True:
-                            if a > 30:
+                            death = rd.randint(1,100)
+                            if death<=50:
+                                terrain.delete(i.id)
+                                Var.LIndiv.remove(i)
+                            elif a > 30:
                                 i.refFlightState(1)
                             else:
                                 i.refFlightState(0)
