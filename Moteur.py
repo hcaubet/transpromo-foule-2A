@@ -295,6 +295,11 @@ def stat_dMaxCase(label):
 
 def stat_nbIndiv(label):
     '''Permet de mettre à jour la fenêtre graphique en affichant le nombre d'individus encore sur le terrain'''
-    label.config(text = str(len(Var.LIndiv)))
+    label.config(text = str(len(Var.LIndiv)))   
+    label.pack()
+    return
+def stat_nbMorts(label):
+    '''Permet de mettre à jour la fenêtre graphique en affichant le nombre d'individus encore sur le terrain'''
+    label.config(text = str(len(Var.LMorts)))
     label.pack()
     return

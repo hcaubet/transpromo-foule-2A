@@ -84,6 +84,7 @@ def renvoie_densite(terrain):
                             if death<=50:
                                 terrain.delete(i.id)
                                 Var.LIndiv.remove(i)
+                                Var.LMorts.append(i)
                             elif a > 30:
                                 i.refFlightState(1)
                             else:

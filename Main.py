@@ -141,6 +141,10 @@ Label(p2, text = "Nombre\n d'individus :").pack()
 label_nbIndiv = Label(p2, text = str(len(Var.LIndiv)))
 label_nbIndiv.pack()
 
+Label(p2, text = "Nombre de morts :").pack()
+label_nbMorts = Label(p2, text = str(len(Var.LMorts)))
+label_nbMorts.pack()
+
 Frame(p2, height=2, bd=1, relief=SUNKEN).pack(fill=X, padx=5, pady=5)
 
 #Le chronomètre qui mesure le temps que met la dernière personne à sortir
@@ -186,6 +190,7 @@ def update():
         bouge_indiv2()
         sortir_indiv(terrain)
         stat_nbIndiv(label_nbIndiv)
+        stat_nbMorts(label_nbMorts)
      
         
         if(len(Var.LIndiv) !=0) :
