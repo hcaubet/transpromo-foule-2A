@@ -18,6 +18,7 @@ NIndiv = 100                                # Nombre d'individu à créer au dé
 rIndiv = 3                                  # Rayon de chaque individu
 vminIndiv = 0.5                             # Vitesse minimale d'un individu
 vmaxIndiv = 2                               # Vitesse maximale d'un individu
+multipleVitesse = 1
 
 # Variables concernant le terrain :
 refresh=0;

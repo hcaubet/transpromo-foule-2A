@@ -13,7 +13,7 @@ class individu:
         self.pos = pos          # Position de chaque individu
         self.dpos = dpos        # Vitesse de chaque individu
         self.r = r              # Rayon de chaque individu
-        self.vmoy = 1.5        # Vitesse moyenne d'un individu
+        self.vmoy = Var.dimCase*Var.TpsRaffraichissement/1000.0*Var.multipleVitesse        # Vitesse moyenne d'un individu
         self.canvas = canvas    # Le Canevas sur lequel on dessine
         self.color = color      # Couleur de chaque individu
         self.flightAssert = False
@@ -30,11 +30,11 @@ class individu:
     def rafraichir(self,color):
         self.canvas.itemconfig(self.id, fill = color, outline = "black")
         if color=="yellow":
-            self.vmoy=0.8
+            self.vmoy=0.4*Var.dimCase*Var.TpsRaffraichissement/1000.0*Var.multipleVitesse  
         elif color=="orange":
-            self.vmoy=0.6
+            self.vmoy=0.2*Var.dimCase*Var.TpsRaffraichissement/1000.0*Var.multipleVitesse  
         if color=="red":
-            self.vmoy=0.2
+            self.vmoy=-1
         return
     
     def refFlightState(self,fs):
@@ -42,7 +42,7 @@ class individu:
         if fs == True:
             self.flightState=True
             self.canvas.itemconfig(self.id, fill="darkgray")
-            self.vmoy =2
+            self.vmoy =0.7*Var.dimCase*Var.TpsRaffraichissement/1000.0*Var.multipleVitesse  
             
         return
 
