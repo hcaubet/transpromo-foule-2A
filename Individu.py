@@ -78,18 +78,19 @@ def renvoie_densite(terrain):
             for i in Var.LIndiv:
                 a =rd.randint(1,100)
                 if (floor(i.pos.y/Var.dimCase)==y and floor(i.pos.x/Var.dimCase)==x) :   
-                    if (activateImmFlight==True or activateRepFlight==True) and i.flightAssert == False:
-                        if activateImmFlight ==True:
+                    if (activateImmFlight==True or activateRepFlight==True):
+                        if activateImmFlight == True:
                             death = rd.randint(1,100)
                             if death<=50:
                                 terrain.delete(i.id)
                                 Var.LIndiv.remove(i)
                                 Var.LMorts.append(i)
-                            elif a > 30:
-                                i.refFlightState(1)
-                            else:
-                                i.refFlightState(0)
-                        elif activateRepFlight == True:
+                            elif i.flightAssert == False:
+                                if a > 30:
+                                    i.refFlightState(1)
+                                else:
+                                    i.refFlightState(0)
+                        elif activateRepFlight == True and i.flightAssert == False:
                             if a > 60 :
                                 i.refFlightState(1)
                             else:
