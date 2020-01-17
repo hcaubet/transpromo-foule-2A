@@ -49,16 +49,11 @@ menu3 = Menu(menubar, tearoff=0)
 menu3.add_command(label= "Normal", command = lambda : change_mode(1))
 menu3.add_command(label= "Champ de potentiel", command = lambda : change_mode(2))
 menu3.add_command(label= "Distance", command = lambda : change_mode(3))
-menu3.add_command(label= "Densité", command = lambda : change_mode(4))
 menu3.add_command(label= "Ligne de champ", command = lambda : change_mode(5))
 menu3.add_separator()
 menu3.add_command(label= "Grille", command = affiche_grille)
 menubar.add_cascade(label="Affichage", menu=menu3)
 
-menu4 = Menu(menubar, tearoff=0)
-menu4.add_command(label="Manuel", command = lambda : os.startfile("..\Memoire.pdf"))
-menu4.add_command(label="A propos", command=info)
-menubar.add_cascade(label="Aide", menu=menu4)
 
 
 tk.config(menu=menubar)
